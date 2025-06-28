@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <h5>Income</h5>
+            <p class="text-success fs-4">₹{{ income }}</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <h5>Expense</h5>
+            <p class="text-danger fs-4">₹{{ expense }}</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <h5>Balance</h5>
+            <p class="text-primary fs-4">₹{{ balance }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="mb-4">
+    <canvas id="categoryPieChart" height="100"></canvas>
+</div>
+
+<div class="mb-4">
+    <canvas id="dailyBarChart" height="100"></canvas>
+</div>
+
+<a href="/add" class="btn btn-primary mb-3">+ Add Entry</a>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>Date</th><th>Type</th><th>Category</th><th>Amount</th><th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in expenses %}
+        <tr>
+            <td>{{ e.date }}</td>
+            <td>{{ e.type }}</td>
+            <td>{{ e.category }}</td>
+            <td>₹{{ e.amount }}</td>
+            <td>{{ e.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    const categoryData = {{ category_data|tojson }};
+    const dailyData = {{ daily_data|tojson }};
+</script>
+<script src="{{ url_for('static', filename='charts.js') }}"></script>
+
+{% endblock %}
